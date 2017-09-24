@@ -29,7 +29,7 @@ public:
 class Trie{
 
 public:
-	bool insertNumber(Node *root, long int number, char*string){
+	bool insertNumber(Node *root, long long int number, char*str){
 		if(number== 0){	
 			return true;
 		}
@@ -37,7 +37,7 @@ public:
 		int currentDigit= number% 10;
 
 		if(root-> children== NULL){
-			root-> children= new Node*[11];
+			root-> children= new Node*[10];
 			root-> children[0]= new Node;
 
 			root-> children[0]-> value= currentDigit;
@@ -45,9 +45,9 @@ public:
 			
 			number/= 10;
 
-			if(insertNumber(root-> children[root-> childCount- 1], number, string)){
-				root-> children[root-> childCount-1]->name= new char[strlen(string)+ 1];
-				strcpy(root->children[(root->childCount)-1]->name, string);
+			if(insertNumber(root-> children[root-> childCount- 1], number, str)){
+				root-> children[root-> childCount-1]->name= new char[strlen(str)+ 1];
+				strcpy(root->children[(root->childCount)-1]->name, str);
 			}
 
 			return false;
@@ -56,7 +56,7 @@ public:
 		for(int i=0; i< root-> childCount; i++){
 			if(root-> children[i]-> value== currentDigit){
 				number/= 10;
-				insertNumber((root-> children[i]), number, string);
+				insertNumber((root-> children[i]), number, str);
 				return false;
 			}
 		}
@@ -66,9 +66,9 @@ public:
 		root-> childCount+= 1;
 		number/= 10;
 		
-		if(insertNumber(root-> children[root-> childCount- 1], number, string)){
-			root-> children[root-> childCount-1]->name= new char[strlen(string)+ 1];
-			strcpy(root->children[(root->childCount)-1]->name, string);
+		if(insertNumber(root-> children[root-> childCount- 1], number, str)){
+			root-> children[root-> childCount-1]->name= new char[strlen(str)+ 1];
+			strcpy(root->children[(root->childCount)-1]->name, str);
 		}
 
 		
@@ -76,7 +76,7 @@ public:
 
 }
 
-void search(Node *root, long int number){
+void search(Node *root, long long int number){
 	if(root-> childCount== 0){
 		cout<< "contact name is:";
 		cout<< " "<< root-> name<< endl;
@@ -123,12 +123,14 @@ int main(){
 	root= new Node;
 	Trie t;
 	int q;
-	long int n;
+	long long int n;
 	char name[40];
 	bool stop= false;
 	char ch;
+try{
 
 	while(1){
+		
 		cout<< "Enter your Query"<< endl;
 		cout<< "1) Enter new contact."<< endl;
 		cout<< "2) Search a contact."<< endl;
@@ -153,7 +155,10 @@ int main(){
 			case 3: stop= true;
 					break;	
 
-			default: cout<<"invalid entry"<< endl;					
+			default: throw "Invalid entry";
+		
+			
+					 					
 		}
 
 		if(stop){
@@ -163,6 +168,12 @@ int main(){
 	}
 	
 	
+		
+	}
+	catch(const char* msg)
+	{
+		cout<<"invalid entry"<< endl;
+	}
 	delete root;
 
 	return 0;
